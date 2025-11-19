@@ -87,7 +87,8 @@ $current_role = $_SESSION['role'];
         <h2 style="margin: 10px 0 8px; font-size:1.1em; color:#6c757d; font-weight:normal;">Akses Cepat</h2>
         <ul class="menu-list">
             <?php if ($current_role === 'kasir' || $current_role === 'admin'): ?>
-                <li><a href="cashier_transaction.php">Transaksi Kasir</a></li> 
+                <li><a href="cashier_transaction.php">Transaksi Kasir</a></li>
+                <li><a href="transaction_monitoring.php">Monitoring Transaksi</a></li>
             <?php endif; ?>
             <?php if ($current_role === 'pembeli'): ?>
                 <li><a href="product_catalog.php">Lihat Katalog Produk</a></li>
