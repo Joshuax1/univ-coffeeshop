@@ -65,6 +65,7 @@ $suppliers = $pdo->query('SELECT * FROM suppliers ORDER BY supplier_id DESC')->f
         <div class="header">Data Supplier</div>
         <p><a href="dashboard.php" class="logout-link">Kembali</a></p>
     </div>
+    <input class="search-input" type="text" placeholder="Cari supplier" oninput="filterSup(this.value)">
     <p style="color: blue;"><?php echo htmlspecialchars($message); ?></p>
 
     <div class="form-container">
@@ -92,7 +93,7 @@ $suppliers = $pdo->query('SELECT * FROM suppliers ORDER BY supplier_id DESC')->f
     </div>
 
     <h3>Daftar Supplier</h3>
-    <div class="product-grid">
+    <div id="suppliers-list" class="product-grid">
         <?php if (!empty($suppliers)): ?>
             <?php foreach ($suppliers as $row): ?>
                 <div class="product-card">
@@ -111,3 +112,12 @@ $suppliers = $pdo->query('SELECT * FROM suppliers ORDER BY supplier_id DESC')->f
 </div>
 </body>
 </html>
+<script>
+function filterSup(q){
+  q = (q||'').toLowerCase();
+  document.querySelectorAll('#suppliers-list .product-card').forEach(function(el){
+    var name = el.querySelector('.name').innerText.toLowerCase();
+    el.style.display = name.indexOf(q) !== -1 ? '' : 'none';
+  });
+}
+</script>

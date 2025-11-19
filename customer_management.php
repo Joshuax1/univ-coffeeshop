@@ -64,6 +64,7 @@ $customers = $pdo->query('SELECT * FROM customers ORDER BY customer_id DESC')->f
         <div class="header">Data Pelanggan</div>
         <p><a href="dashboard.php" class="logout-link">Kembali</a></p>
     </div>
+    <input class="search-input" type="text" placeholder="Cari pelanggan" oninput="filterCust(this.value)">
     <p style="color: blue;"><?php echo htmlspecialchars($message); ?></p>
 
     <div class="form-container">
@@ -88,7 +89,7 @@ $customers = $pdo->query('SELECT * FROM customers ORDER BY customer_id DESC')->f
     </div>
 
     <h3>Daftar Pelanggan</h3>
-    <div class="product-grid">
+    <div id="customers-list" class="product-grid">
         <?php if (!empty($customers)): ?>
             <?php foreach ($customers as $row): ?>
                 <div class="product-card">
@@ -107,3 +108,12 @@ $customers = $pdo->query('SELECT * FROM customers ORDER BY customer_id DESC')->f
 </div>
 </body>
 </html>
+<script>
+function filterCust(q){
+  q = (q||'').toLowerCase();
+  document.querySelectorAll('#customers-list .product-card').forEach(function(el){
+    var name = el.querySelector('.name').innerText.toLowerCase();
+    el.style.display = name.indexOf(q) !== -1 ? '' : 'none';
+  });
+}
+</script>

@@ -64,6 +64,11 @@ $materials = $pdo->query('SELECT * FROM raw_materials ORDER BY material_id DESC'
         <div class="header">Data bahan baku</div>
         <p><a href="dashboard.php" class="logout-link">Kembali</a></p>
     </div>
+    <input class="search-input" type="text" placeholder="Cari bahan baku" oninput="filterList(this.value)">
+    <div class="segmented">
+        <div class="segment active">Sergerti</div>
+        <div class="segment">Kategori</div>
+    </div>
     <p style="color: blue;"><?php echo htmlspecialchars($message); ?></p>
 
     <div class="form-container">
@@ -88,11 +93,18 @@ $materials = $pdo->query('SELECT * FROM raw_materials ORDER BY material_id DESC'
     </div>
 
     <h3>Daftar Bahan Baku</h3>
-    <div class="product-grid">
+    <div id="materials-list" class="product-grid">
         <?php if (!empty($materials)): ?>
             <?php foreach ($materials as $row): ?>
                 <div class="product-card">
-                    <div class="name"><?php echo htmlspecialchars($row['material_name']); ?></div>
+                    <div class="name">
+                        <?php
+                          $stock = (int)($row['stock'] ?? 0);
+                          $dotClass = $stock <= 10 ? 'dot-red' : ($stock <= 30 ? 'dot-yellow' : 'dot-green');
+                        ?>
+                        <span class="dot <?php echo $dotClass; ?>"></span>
+                        <?php echo htmlspecialchars($row['material_name']); ?>
+                    </div>
                     <div class="details">Stok: <?php echo number_format((float)$row['stock'], 0, ',', '.'); ?> <?php echo htmlspecialchars($row['unit']); ?></div>
                     <div class="actions">
                         <a class="edit-btn" href="?action=edit&id=<?php echo $row['material_id']; ?>">Edit</a>
@@ -107,3 +119,12 @@ $materials = $pdo->query('SELECT * FROM raw_materials ORDER BY material_id DESC'
 </div>
 </body>
 </html>
+<script>
+function filterList(q){
+  q = (q||'').toLowerCase();
+  document.querySelectorAll('#materials-list .product-card').forEach(function(el){
+    var name = el.querySelector('.name').innerText.toLowerCase();
+    el.style.display = name.indexOf(q) !== -1 ? '' : 'none';
+  });
+}
+</script>
