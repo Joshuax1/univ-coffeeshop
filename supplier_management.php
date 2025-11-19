@@ -9,21 +9,22 @@ if ($current_role !== 'admin') {
 $message = $_GET['message'] ?? '';
 $action = $_GET['action'] ?? 'read';
 $id = $_GET['id'] ?? null;
-$supplier = ['supplier_id' => '', 'supplier_name' => '', 'contact' => '', 'address' => ''];
+$supplier = ['supplier_id' => '', 'supplier_name' => '', 'contact_person' => '', 'phone' => '', 'address' => ''];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $supplier_id = $_POST['supplier_id'] ?? null;
     $name = trim($_POST['supplier_name']);
-    $contact = trim($_POST['contact'] ?? '');
+    $contact_person = trim($_POST['contact_person'] ?? '');
+    $phone = trim($_POST['phone'] ?? '');
     $address = trim($_POST['address'] ?? '');
 
     if ($supplier_id) {
-        $stmt = $pdo->prepare('UPDATE suppliers SET supplier_name = ?, contact = ?, address = ? WHERE supplier_id = ?');
-        $ok = $stmt->execute([$name, $contact, $address, $supplier_id]);
+        $stmt = $pdo->prepare('UPDATE suppliers SET supplier_name = ?, contact_person = ?, phone = ?, address = ? WHERE supplier_id = ?');
+        $ok = $stmt->execute([$name, $contact_person, $phone, $address, $supplier_id]);
         $message = $ok ? 'Supplier diperbarui.' : 'Gagal memperbarui.';
     } else {
-        $stmt = $pdo->prepare('INSERT INTO suppliers (supplier_name, contact, address) VALUES (?, ?, ?)');
-        $ok = $stmt->execute([$name, $contact, $address]);
+        $stmt = $pdo->prepare('INSERT INTO suppliers (supplier_name, contact_person, phone, address) VALUES (?, ?, ?, ?)');
+        $ok = $stmt->execute([$name, $contact_person, $phone, $address]);
         $message = $ok ? 'Supplier ditambahkan.' : 'Gagal menambahkan.';
     }
     header('Location: supplier_management.php?message=' . urlencode($message));
@@ -74,8 +75,11 @@ $suppliers = $pdo->query('SELECT * FROM suppliers ORDER BY supplier_id DESC')->f
             <label for="supplier_name">Nama Supplier:</label>
             <input type="text" name="supplier_name" value="<?php echo htmlspecialchars($supplier['supplier_name']); ?>" required>
 
-            <label for="contact">Kontak:</label>
-            <input type="text" name="contact" value="<?php echo htmlspecialchars($supplier['contact']); ?>">
+            <label for="contact_person">Contact Person:</label>
+            <input type="text" name="contact_person" value="<?php echo htmlspecialchars($supplier['contact_person']); ?>">
+
+            <label for="phone">Telepon:</label>
+            <input type="text" name="phone" value="<?php echo htmlspecialchars($supplier['phone']); ?>">
 
             <label for="address">Alamat:</label>
             <input type="text" name="address" value="<?php echo htmlspecialchars($supplier['address']); ?>">
@@ -93,7 +97,7 @@ $suppliers = $pdo->query('SELECT * FROM suppliers ORDER BY supplier_id DESC')->f
             <?php foreach ($suppliers as $row): ?>
                 <div class="product-card">
                     <div class="name"><?php echo htmlspecialchars($row['supplier_name']); ?></div>
-                    <div class="details"><?php echo htmlspecialchars($row['contact'] ?: '-'); ?> | <?php echo htmlspecialchars($row['address'] ?: '-'); ?></div>
+                    <div class="details"><?php echo htmlspecialchars(($row['contact_person'] ?? '') ?: '-'); ?> <?php echo ($row['phone'] ? ' | ' . htmlspecialchars($row['phone']) : ''); ?> | <?php echo htmlspecialchars(($row['address'] ?? '') ?: '-'); ?></div>
                     <div class="actions">
                         <a class="edit-btn" href="?action=edit&id=<?php echo $row['supplier_id']; ?>">Edit</a>
                         <a class="delete-btn" href="?action=delete&id=<?php echo $row['supplier_id']; ?>" onclick="return confirm('Hapus supplier ini?')">Hapus</a>
