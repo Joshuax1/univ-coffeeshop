@@ -89,6 +89,10 @@ $current_role = $_SESSION['role'];
             <?php if ($current_role === 'kasir' || $current_role === 'admin'): ?>
                 <li><a href="cashier_transaction.php">Transaksi Kasir</a></li> 
             <?php endif; ?>
+            <?php if ($current_role === 'pembeli'): ?>
+                <li><a href="product_catalog.php">Lihat Katalog Produk</a></li>
+                <li><a href="order_history.php">Riwayat Pesanan</a></li>
+            <?php endif; ?>
         </ul>
     </div>
 </body>
