@@ -18,6 +18,8 @@ $password_kasir = 'kasir123';
 $hashed_admin_pass = password_hash($password_admin, PASSWORD_BCRYPT);
 $hashed_kasir_pass = password_hash($password_kasir, PASSWORD_BCRYPT);
 
+$hashed_pembeli_pass = password_hash('pembeli123', PASSWORD_BCRYPT);
+
 $users_to_seed = [
     [
         'username' => 'superadmin', 
@@ -30,6 +32,18 @@ $users_to_seed = [
         'email' => 'kasir@pos.com', 
         'password' => $hashed_kasir_pass, 
         'role' => 'kasir'
+    ],
+    [
+        'username' => 'pembeli1', 
+        'email' => 'pembeli1@pos.com', 
+        'password' => $hashed_pembeli_pass, 
+        'role' => 'pembeli'
+    ],
+    [
+        'username' => 'pembeli2', 
+        'email' => 'pembeli2@pos.com', 
+        'password' => $hashed_pembeli_pass, 
+        'role' => 'pembeli'
     ],
 ];
 
@@ -97,7 +111,7 @@ function ensure_schema(PDO $pdo, bool $withConstraints = false) {
         username VARCHAR(50) NOT NULL,
         email VARCHAR(100) NOT NULL,
         password VARCHAR(255) NOT NULL,
-        role ENUM('admin','kasir','supplier') NOT NULL DEFAULT 'kasir',
+        role ENUM('admin','kasir','supplier','pembeli') NOT NULL DEFAULT 'pembeli',
         created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
         PRIMARY KEY (user_id),
         UNIQUE KEY username (username),

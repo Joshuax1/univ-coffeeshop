@@ -97,6 +97,7 @@ $users = $pdo->query('SELECT user_id, username, email, role FROM users ORDER BY 
                     <option value="<?php echo $val; ?>" <?php echo ($user['role'] === $val ? 'selected' : ''); ?>><?php echo $label; ?></option>
                 <?php endforeach; ?>
             </select>
+            <p style="font-size:0.9em; color:#6c757d; margin-top:5px;">Catatan: Role 'Pembeli' hanya dapat didaftar melalui halaman registrasi publik.</p>
 
             <label for="password">Kata Sandi <?php echo ($action === 'edit' ? '(isi jika ingin diubah)' : ''); ?>:</label>
             <input type="password" name="password" <?php echo ($action === 'edit' ? '' : 'required'); ?>>

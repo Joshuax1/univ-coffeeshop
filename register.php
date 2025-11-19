@@ -13,11 +13,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password']; 
     
-    $requested_role = $_POST['role'] ?? 'kasir';
-    
-    if (!in_array($requested_role, ['admin', 'kasir', 'supplier'])) {
-        $requested_role = 'kasir'; 
-    }
+    // Hanya role 'pembeli' yang bisa mendaftar dari halaman register
+    $requested_role = 'pembeli';
 
     if ($password !== $confirm_password) {
         $error = "Konfirmasi kata sandi tidak cocok.";
@@ -83,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <label for="confirm_password">Konfirmasi Kata Sandi:</label>
             <input type="password" name="confirm_password" placeholder="Ulangi Kata Sandi" required>
             
-            <input type="hidden" name="role" value="kasir"> 
+            <input type="hidden" name="role" value="pembeli"> 
 
             <button type="submit" class="main-button">Selanjutnya</button>
         </form>
