@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <p style="text-align: center; font-size: 3em; margin-bottom: 0;">✅</p>
                 <p style="text-align: center; font-weight: bold; margin-top: 5px;">Selamat Anda Berhasil Mendaftar</p>
             </div>
-            <p style="text-align: center;"><a href="login.php" class="main-button" style="text-decoration:none;">Masuk Sekarang</a></p>
+            <a href="login.php" class="main-button" style="display:block; text-align:center; text-decoration:none; margin-top:15px;">Masuk Sekarang</a>
         <?php endif; ?>
 
         <?php if (empty($message)): ?>

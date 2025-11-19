@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             <a href="forgot_password.php" class="link-text">Lupa Sandi?</a>
             
-            <button type="submit" class="main-button">Lanjutkan</button>
+            <button type="submit" class="main-button" style="width:100%; padding:14px 20px; margin:8px 0; border-radius:4px; cursor:pointer; font-size:1em; text-align:center; box-sizing:border-box; background-color:#4a5568; color:white; border:none;">Lanjutkan</button>
         </form>
         
         <div class="divider">

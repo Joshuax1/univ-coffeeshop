@@ -5,6 +5,20 @@ require 'db_connect.php';
 if ($current_role !== 'admin' && $current_role !== 'kasir') {
     exit("Akses ditolak.");
 }
+
+$success_message = '';
+$error_message = '';
+
+// Ambil pesan dari session jika ada
+if (isset($_SESSION['transaction_success'])) {
+    $success_message = $_SESSION['transaction_success'];
+    unset($_SESSION['transaction_success']);
+}
+
+if (isset($_SESSION['transaction_error'])) {
+    $error_message = $_SESSION['transaction_error'];
+    unset($_SESSION['transaction_error']);
+}
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -20,6 +34,23 @@ if ($current_role !== 'admin' && $current_role !== 'kasir') {
             <div class="header">Transaksi Kasir</div>
             <p><a href="dashboard.php" class="logout-link">Kembali</a></p>
         </div>
+        
+        <?php if (!empty($success_message)): ?>
+            <div class="alert alert-success" style="background-color:#d4edda; color:#155724; border:1px solid #c3e6cb; padding:12px; border-radius:4px; margin-bottom:15px;">
+                ✅ <?= htmlspecialchars($success_message) ?>
+            </div>
+            <script>
+                setTimeout(function() {
+                    document.querySelector('.alert-success').style.display = 'none';
+                }, 3000);
+            </script>
+        <?php endif; ?>
+        
+        <?php if (!empty($error_message)): ?>
+            <div class="alert alert-error" style="background-color:#f8d7da; color:#721c24; border:1px solid #f5c6cb; padding:12px; border-radius:4px; margin-bottom:15px;">
+                ❌ <?= htmlspecialchars($error_message) ?>
+            </div>
+        <?php endif; ?>
         
         <div class="form-container">
             <h3>Input Penjualan Cepat</h3>
