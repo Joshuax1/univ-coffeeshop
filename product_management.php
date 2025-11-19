@@ -67,47 +67,52 @@ $products = $pdo->query("SELECT * FROM products ORDER BY product_id DESC")->fetc
     <link rel="stylesheet" href="style.css"> 
 </head>
 <body class="dashboard-body">
-    <div class="header">Data Produk</div>
-    <p style="color: blue;"><?= htmlspecialchars($message) ?></p>
+    <div class="dashboard-wrapper">
+        <div class="header-row">
+            <div class="header">Data Produk</div>
+            <p><a href="dashboard.php" class="logout-link">Kembali</a></p>
+        </div>
+        <p style="color: blue;"><?= htmlspecialchars($message) ?></p>
 
-    <div class="form-container">
-        <h3><?= ($action === 'edit' ? 'Edit Produk: ' . htmlspecialchars($product_data['product_name']) : 'Tambah Produk Baru') ?></h3>
-        <form method="POST">
-            <input type="hidden" name="product_id" value="<?= htmlspecialchars($product_data['product_id']) ?>">
-            
-            <label for="product_name">Nama Produk:</label>
-            <input type="text" name="product_name" value="<?= htmlspecialchars($product_data['product_name']) ?>" required>
-            
-            <label for="price">Harga Jual (Rp.):</label>
-            <input type="number" step="1" name="price" value="<?= htmlspecialchars($product_data['price']) ?>" required>
-            
-            <label for="category">Kategori:</label>
-            <input type="text" name="category" value="<?= htmlspecialchars($product_data['category']) ?>">
+        <div class="form-container">
+            <h3><?= ($action === 'edit' ? 'Edit Produk: ' . htmlspecialchars($product_data['product_name']) : 'Tambah Produk Baru') ?></h3>
+            <form method="POST">
+                <input type="hidden" name="product_id" value="<?= htmlspecialchars($product_data['product_id']) ?>">
+                
+                <label for="product_name">Nama Produk:</label>
+                <input type="text" name="product_name" value="<?= htmlspecialchars($product_data['product_name']) ?>" required>
+                
+                <label for="price">Harga Jual (Rp.):</label>
+                <input type="number" step="1" name="price" value="<?= htmlspecialchars($product_data['price']) ?>" required>
+                
+                <label for="category">Kategori:</label>
+                <input type="text" name="category" value="<?= htmlspecialchars($product_data['category']) ?>">
 
-            <button type="submit" class="form-button"><?= ($action === 'edit' ? 'Simpan Perubahan' : 'Tambahkan Produk') ?></button>
-            <?php if ($action === 'edit'): ?>
-                <a href="product_management.php" class="cancel-link">Batal</a>
-            <?php endif; ?>
-        </form>
-    </div>
+                <button type="submit" class="form-button"><?= ($action === 'edit' ? 'Simpan Perubahan' : 'Tambahkan Produk') ?></button>
+                <?php if ($action === 'edit'): ?>
+                    <a href="product_management.php" class="cancel-link">Batal</a>
+                <?php endif; ?>
+            </form>
+        </div>
 
-    <h3>Daftar Produk</h3>
-    <div class="product-grid">
-        <?php if (!empty($products)): ?>
-            <?php foreach ($products as $product): ?>
-                <div class="product-card">
-                    <div class="name"><?= htmlspecialchars($product['product_name']) ?></div>
-                    <div class="details">Harga: Rp<?= number_format($product['price'], 0, ',', '.') ?> | Kategori: <?= htmlspecialchars($product['category'] ?? '-') ?></div>
-                    <div class="actions">
-                        <a href="?action=edit&id=<?= $product['product_id'] ?>" class="edit-btn">Edit</a>
-                        <a href="?action=delete&id=<?= $product['product_id'] ?>" class="delete-btn" 
-                            onclick="return confirm('Yakin ingin menghapus produk <?= htmlspecialchars($product['product_name']) ?>?')">Hapus</a>
+        <h3>Daftar Produk</h3>
+        <div class="product-grid">
+            <?php if (!empty($products)): ?>
+                <?php foreach ($products as $product): ?>
+                    <div class="product-card">
+                        <div class="name"><?= htmlspecialchars($product['product_name']) ?></div>
+                        <div class="details">Harga: Rp<?= number_format($product['price'], 0, ',', '.') ?> | Kategori: <?= htmlspecialchars($product['category'] ?? '-') ?></div>
+                        <div class="actions">
+                            <a href="?action=edit&id=<?= $product['product_id'] ?>" class="edit-btn">Edit</a>
+                            <a href="?action=delete&id=<?= $product['product_id'] ?>" class="delete-btn" 
+                                onclick="return confirm('Yakin ingin menghapus produk <?= htmlspecialchars($product['product_name']) ?>?')">Hapus</a>
+                        </div>
                     </div>
-                </div>
-            <?php endforeach; ?>
-        <?php else: ?>
-            <p>Belum ada data produk.</p>
-        <?php endif; ?>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p>Belum ada data produk.</p>
+            <?php endif; ?>
+        </div>
     </div>
 </body>
 </html>
