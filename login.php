@@ -16,17 +16,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($email) || empty($password)) {
         $error = "Email dan Kata Sandi wajib diisi.";
     } else {
-        $stmt = $conn->prepare("SELECT id, email, password FROM users WHERE email = ?");
-        $stmt->bind_param("s", $email);
-        $stmt->execute();
-        $result = $stmt->get_result();
+        $stmt = $pdo->prepare("SELECT user_id, email, password FROM users WHERE email = ?");
+        $stmt->execute([$email]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($result->num_rows === 1) {
-            $user = $result->fetch_assoc();
-
+        if ($user) {
+            
             if (password_verify($password, $user['password'])) {
                 
-                $_SESSION['user_id'] = $user['id'];
+                $_SESSION['user_id'] = $user['user_id'];
                 $_SESSION['user_email'] = $user['email'];
                 
                 header('Location: dashboard.php');
@@ -39,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $error = "Email atau Kata Sandi salah.";
         }
 
-        $stmt->close();
+        $stmt = null;
     }
 } 
 ?>
