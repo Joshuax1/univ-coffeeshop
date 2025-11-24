@@ -1,45 +1,35 @@
 <?php
-include 'db_connect.php'; 
-
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
 session_start();
+require 'db_connect.php'; 
 
-$error = "";
+$error = '';
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = trim($_POST['email']);
     $password = $_POST['password'];
 
-    if (empty($email) || empty($password)) {
-        $error = "Email dan Kata Sandi wajib diisi.";
-    } else {
-        $stmt = $pdo->prepare("SELECT user_id, email, password FROM users WHERE email = ?");
-        $stmt->execute([$email]);
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    $stmt = $pdo->prepare("SELECT user_id, username, password, role FROM users WHERE email = ?");
+    $stmt->execute([$email]);
+    $user = $stmt->fetch();
 
-        if ($user) {
+    if ($user) {
+        if (password_verify($password, $user['password'])) { 
+            $_SESSION['user_id'] = $user['user_id'];
+            $_SESSION['role'] = $user['role'];
+            $_SESSION['username'] = $user['username'];
             
-            if (password_verify($password, $user['password'])) {
-                
-                $_SESSION['user_id'] = $user['user_id'];
-                $_SESSION['user_email'] = $user['email'];
-                
-                header('Location: dashboard.php');
-                exit;
-
-            } else {
-                $error = "Email atau Kata Sandi salah.";
-            }
+            header('Location: dashboard.php');
+            exit;
         } else {
             $error = "Email atau Kata Sandi salah.";
         }
-
-        $stmt = null;
+    } else {
+        $error = "Email atau Kata Sandi salah.";
     }
-} 
+}
 ?>
 
 <!DOCTYPE html>
